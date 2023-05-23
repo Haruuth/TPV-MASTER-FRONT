@@ -1,35 +1,44 @@
-import React, { useState } from 'react';
-import '../Salon/Salon.scss';
+import React, { useState } from "react";
+import "../Salon/Salon.scss";
 
-const Salon = ({ onTableSelect }) => {
-  const [selectedTable, setSelectedTable] = useState(null);
+const Salon = ({ isOpen, onClose }) => {
+const [diseñoSalon, setDiseñoSalon] = useState(false)
 
-  const handleTableClick = (tableNumber) => {
-    setSelectedTable(tableNumber);
-    if (onTableSelect) {
-      onTableSelect(tableNumber);
+  if (!isOpen) {
+    return null;
+  }
+
+  const abrirSalon = () => {
+    setDiseñoSalon(true)
     }
-  };
 
-  const tables = Array(12) // Cambia este número según la cantidad de mesas que necesites
-    .fill()
-    .map((_, index) => index + 1);
+  const abrirTerraza = () => {
+    setDiseñoSalon(false)
+    }
+  
 
   return (
-    <div className="salon">
-      <h2>Selecciona una mesa</h2>
-      <div className="table-grid">
-        {tables.map((tableNumber) => (
-          <button
-            key={tableNumber}
-            className={`table-btn ${
-              selectedTable === tableNumber ? 'table-selected' : ''
-            }`}
-            onClick={() => handleTableClick(tableNumber)}
-          >
-            Mesa {tableNumber}
-          </button>
-        ))}
+    <div className="container">
+      <div className="botones">
+        <button onClick={onClose}>❌</button>
+        <button onClick={abrirSalon}>SALÓN</button>
+        <button onClick={abrirTerraza}>TERRAZA</button>
+      </div>
+      <div className="diseños">
+
+      {diseñoSalon ? 
+      (
+      <div className="diseñoDeSalon"> 
+      AQUI VA EL SALON
+      </div>
+      ):( 
+      <div className="diseñoDeTerraza">
+      AQUI VA LA TERRAZA
+      </div>
+      )}
+
+      
+
       </div>
     </div>
   );
