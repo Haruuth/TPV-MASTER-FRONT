@@ -1,8 +1,40 @@
-nav{
+.categories {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: space-around;
+    height: 100%;
+    width: 100%;
     align-items: center;
-    // border: 2px solid black;
 }
 
+.link {
+    height: 17%;
+}
+
+.bebida {
+    height: 90%;
+}
+
+/* Estilos específicos para tabletas */
+@media (max-width: 768px) {
+   
+    .link {
+        height: 10%;
+    }
+    
+    .bebida {
+        height: 90%;
+    }
+}
+
+/* Estilos específicos para ordenadores */
+@media (min-width: 1024px) {
+    
+    .link {
+        height: 25%;
+    }
+    
+    .bebida {
+        height: 90%;
+    }
+}
