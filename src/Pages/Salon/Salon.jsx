@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../Salon/Salon.scss";
+import "./Salon.scss";
 
 const Salon = ({ isOpen, onClose }) => {
 const [diseñoSalon, setDiseñoSalon] = useState(false)

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./Cervezas.scss";
 
-export const Cervezas = () => {
+export const Cervezas = ({ setSelectedProduct }) => {
   const [cervezas, setCervezas] = useState([]);
 
   useEffect(() => {
@@ -15,7 +15,7 @@ export const Cervezas = () => {
   return (
     <div className="containerProd">
       {cervezas.map((cerveza, id) => (
-        <div className="individual" key={id}>
+        <div className="individual" key={id} onClick={() => setSelectedProduct(cuentaProducts =>[...cuentaProducts, cerveza])}>
           <img src={cerveza.image} alt={cerveza.nombre} />
           <p><strong>{cerveza.nombre}</strong></p>
           <p>Precio: {cerveza.precio}</p>
