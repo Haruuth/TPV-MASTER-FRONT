@@ -1,16 +1,18 @@
-// .container {
-//   top: 15%;
-//   left: 15%;
-//   max-width: 75%;
-//   height: 75%;
-//   position: absolute;
-//   background-color: rgb(0, 0, 0);
-// }
+
 
 @media (max-width: 768px) {
   .button .mesa {
     font-size: 5px;
   }
+
+
+@media (max-width: 768px) {
+
+  .button .mesa{
+    font-size: 5px;
+  }
+
+
 }
 
 @media (min-width: 768px) {
@@ -27,6 +29,9 @@
     margin-left: 10%;
     z-index: 10;
   }
+
+
+  
 
   .botones {
     width: 30%;

@@ -74,6 +74,7 @@
   background-color: #0e007b;
   width: 30%;
   height: 60%;
+  overflow-y: scroll;
 }
 
 

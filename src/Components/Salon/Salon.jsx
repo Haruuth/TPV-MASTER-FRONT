@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+
 import "./Salon.scss";
 // import Draggable from "react-draggable";
+
 
 const Salon = ({ isOpen, onClose }) => {
   const [diseñoSalon, setDiseñoSalon] = useState(true);
@@ -37,6 +39,7 @@ const Salon = ({ isOpen, onClose }) => {
   //   );
   // };
 
+
   return (
     <div className="contenedor">
       <div className="botones">
@@ -57,6 +60,7 @@ const Salon = ({ isOpen, onClose }) => {
         {diseñoSalon ? (
           <div className="diseñoDeSalon">
             <div className="mitad">
+
               {/* <Draggable> */}
                 <div id="Mesa9" className="mesa">
                   Mesa9
@@ -140,6 +144,7 @@ const Salon = ({ isOpen, onClose }) => {
                   Mesa1
                 </div>
               {/* </Draggable> */}
+
             </div>
           </div>
         ) : (
