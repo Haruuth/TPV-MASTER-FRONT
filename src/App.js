@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { Cervezas } from "./Components/Cervezas/Cervezas";
 import { Ginebras } from "./Components/Ginebras/Ginebras";
 import { Categorias } from "./Components/Categorias/Categorias";
-import Salon from "./Pages/Salon/Salon";
+import Salon from "./Components/Salon/Salon";
 
 function App() {
   const [selectedProduct, setSelectedProduct] = useState([]);
@@ -27,8 +27,8 @@ function App() {
           {/* </div> */}
 
           <div className="textarea">
-            <div>
-              <p>Cuenta total:</p>
+            <div className="textarea--bloque">
+              {/* <p>Cuenta total:</p> */}
               {selectedProduct.map((product, index) => (
                 <div className="cuenta" key={index}>
                   <p>{product.nombre}</p>

@@ -21,15 +21,23 @@
   background-color: #ff0e0eee;
   width: 60%;
   height: 40%;
-  overflow: auto;
 }
 
+.textarea--bloque{
+  width: 100%;
+  height: 80%;
+  overflow-y: scroll;
+}
+
+
 .textarea .barraInferior {
-  position: sticky;
+  position: absolute;
+  /* position: fixed; */
+  float: bottom;
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 5vh;
+  height: 20%;
   display: flex;
   justify-content: flex-end;
   background-color: black;
@@ -68,16 +76,9 @@
   height: 60%;
 }
 
-.categoria img{
-    width: 146px;
-    border: 1px solid black;
-    height: auto;
-    object-fit: cover;
-}
 
 .App-div {
   background-color: #282c34;
-  /* min-height: 100vh; */
   display: flex;
   flex-direction: column;
   align-items: center;
