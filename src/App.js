@@ -5,38 +5,50 @@ import { Cervezas } from "./Components/Cervezas/Cervezas";
 import { Ginebras } from "./Components/Ginebras/Ginebras";
 import { Categorias } from "./Components/Categorias/Categorias";
 import Salon from "./Components/Salon/Salon";
-// import { Productos } from "./Components/Productos/Productos";
 
 function App() {
-  // const [rones, setRones] = useState([]);
-  // const [whiskey, setWhiskey] = useState([]);
-  // const [vodka, setVodka] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState([]);
   const [salonOpen, setSalonOpen] = useState(false);
 
   const openSalones = () => {
     setSalonOpen(true);
   };
-  // const closeSalones = () => {
-  //   setSalonOpen(false);
-  // }
 
+  const totalCuenta = selectedProduct.reduce(
+    (sum, product) => sum + product.precio,
+    0
+  );
   return (
     <Router>
       <div className="containerApp">
         <div className="App">
-
           {/* <div className="modal"> */}
           <Salon isOpen={salonOpen} onClose={() => setSalonOpen(false)}></Salon>
           {/* </div> */}
 
           <div className="textarea">
-            <p>TEXTAREA</p>
+            <div className="textarea--bloque">
+              {/* <p>Cuenta total:</p> */}
+              {selectedProduct.map((product, index) => (
+                <div className="cuenta" key={index}>
+                  <p>{product.nombre}</p>
+                  <p>{product.precio}</p>
+                </div>
+              ))}
+            </div>
+            <div className="barraInferior">
+              <p className="mesa">
+                <strong>Mesa: </strong>
+              </p>
+              <p className="total">
+                <strong>Total: {totalCuenta} </strong>
+              </p>
+            </div>
           </div>
 
           <div className="calculadora">
             <p> CALCULADORA </p>
           </div>
-
 
           <div className="categoria">
             <Categorias></Categorias>
@@ -44,7 +56,10 @@ function App() {
 
           <div className="products">
             <Routes>
-              <Route path="/cervezas" element={<Cervezas />} />
+              <Route
+                path="/cervezas"
+                element={<Cervezas setSelectedProduct={setSelectedProduct} />}
+              />
               <Route path="/ginebras" element={<Ginebras />} />
             </Routes>
           </div>
