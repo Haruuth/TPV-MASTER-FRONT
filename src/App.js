@@ -11,37 +11,24 @@ function App() {
   const [selectedProduct, setSelectedProduct] = useState([]);
   const [salonOpen, setSalonOpen] = useState(false);
 
+
   const openSalones = () => {
-    setSalonOpen(true);
+    setSalonOpen(prevState => !prevState);
   };
+
 
   const totalCuenta = selectedProduct.reduce(
     (sum, product) => sum + product.precio,
     0
-  );
+  ).toFixed(2);
 
-  const toggleSeleccionado = (index) => {
-    const updatedProducts = [...selectedProduct];
-    updatedProducts[index].seleccionado = !updatedProducts[index].seleccionado;
-    setSelectedProduct(updatedProducts);
-  };
+  
   const quitProducts = (index) => {
     const updateProducts = [...selectedProduct];
     updateProducts.splice(index, 1 )
     setSelectedProduct(updateProducts);
   }
-  // const cambiarPrecio = (index, precio) => {
-  //   const updatedProducts = [...selectedProduct];
-  //   updatedProducts[index].precioModificado = precio;
-  //   setSelectedProduct(updatedProducts);
-  // };
-
-  // const cambiarCantidad = (index, cantidad) => {
-  //   const updatedProducts = [...selectedProduct];
-  //   updatedProducts[index].cantidadModificada = cantidad;
-  //   setSelectedProduct(updatedProducts);
-  // };
-
+ 
 
   return (
     <Router>
@@ -56,23 +43,20 @@ function App() {
               {/* <p>Cuenta total:</p> */}
               {selectedProduct.map((product, index) => (
                  <div className={`cuenta ${product.seleccionado ? 'seleccionado' : ''}`} key={index}>
-                 <input
-                   type="checkbox"
-                   checked={product.seleccionado}
-                   onChange={() => toggleSeleccionado(index)}
-                 />
                   <p>{product.nombre}</p>
                   <p>{product.precio}</p>
-                  <button onClick={() => quitProducts(index)}>❌NONI</button>
+                  <button onClick={() => quitProducts(index)}>❌</button>
                 </div>
               ))}
             </div>
             <div className="barraInferior">
               <p className="mesa">
                 <strong>Mesa: </strong>
+                <strong> ID </strong>
               </p>
               <p className="total">
-                <strong>Total: {totalCuenta} </strong>
+                <strong>Total: </strong>
+                <strong> {totalCuenta} </strong>
               </p>
             </div>
           </div>

@@ -4,9 +4,38 @@ import "./Salon.scss";
 // import Draggable from "react-draggable";
 
 
-const Salon = ({ isOpen, onClose }) => {
+const Salon = ({ isOpen }) => {
   const [diseñoSalon, setDiseñoSalon] = useState(true);
   const [mostrarNuevaMesa, setMostrarNuevaMesa] = useState(false);
+//   const [mesas, setMesas] = useState([]);
+
+
+//FUNCION PARA GENERAR MESAS
+//   const generarMesas = () => {
+//     const nuevasMesas = [];
+//     const totalMesas = 17;
+
+//     for (let i = 1; i <= totalMesas; i++) {
+//       const mesa = {
+//         id: i,
+//         numero: i,
+//         nombre: `Mesa ${i}`,
+//         seleccionada: false,
+//         estado: "Libre",
+//         pedidos: [],
+//         cuenta: 0,
+        // Otras propiedades relevantes a tu caso
+//       };
+//       nuevasMesas.push(mesa);
+//     }
+
+//     setMesas(nuevasMesas);
+//   };
+
+//   useEffect(() => {
+//     generarMesas();
+//   }, []);
+
 
   if (!isOpen) {
     return null;
@@ -40,12 +69,10 @@ const Salon = ({ isOpen, onClose }) => {
   // };
 
 
+
   return (
     <div className="contenedor">
       <div className="botones">
-        <button className="button" onClick={onClose}>
-          ❌
-        </button>
         <button className="button" onClick={abrirSalon}>
           SALÓN
         </button>

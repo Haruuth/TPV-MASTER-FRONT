@@ -1,0 +1,11 @@
+.individual1 {
+  border: 1px solid black;
+  width: 200px;
+  height: auto;
+}
+.individual1 img {
+  width: auto;
+  height: 160px;
+  -o-object-fit: cover;
+     object-fit: cover;
+}/*# sourceMappingURL=Ginebras.css.map */
