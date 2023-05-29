@@ -5,6 +5,7 @@ import { Cervezas } from "./Components/Cervezas/Cervezas";
 import { Ginebras } from "./Components/Ginebras/Ginebras";
 import { Categorias } from "./Components/Categorias/Categorias";
 import Salon from "./Components/Salon/Salon";
+import { Cocteles } from "./Components/Cocteles/Cocteles";
 
 function App() {
   const [selectedProduct, setSelectedProduct] = useState([]);
@@ -18,6 +19,30 @@ function App() {
     (sum, product) => sum + product.precio,
     0
   );
+
+  const toggleSeleccionado = (index) => {
+    const updatedProducts = [...selectedProduct];
+    updatedProducts[index].seleccionado = !updatedProducts[index].seleccionado;
+    setSelectedProduct(updatedProducts);
+  };
+  const quitProducts = (index) => {
+    const updateProducts = [...selectedProduct];
+    updateProducts.splice(index, 1 )
+    setSelectedProduct(updateProducts);
+  }
+  // const cambiarPrecio = (index, precio) => {
+  //   const updatedProducts = [...selectedProduct];
+  //   updatedProducts[index].precioModificado = precio;
+  //   setSelectedProduct(updatedProducts);
+  // };
+
+  // const cambiarCantidad = (index, cantidad) => {
+  //   const updatedProducts = [...selectedProduct];
+  //   updatedProducts[index].cantidadModificada = cantidad;
+  //   setSelectedProduct(updatedProducts);
+  // };
+
+
   return (
     <Router>
       <div className="containerApp">
@@ -30,9 +55,15 @@ function App() {
             <div className="textarea--bloque">
               {/* <p>Cuenta total:</p> */}
               {selectedProduct.map((product, index) => (
-                <div className="cuenta" key={index}>
+                 <div className={`cuenta ${product.seleccionado ? 'seleccionado' : ''}`} key={index}>
+                 <input
+                   type="checkbox"
+                   checked={product.seleccionado}
+                   onChange={() => toggleSeleccionado(index)}
+                 />
                   <p>{product.nombre}</p>
                   <p>{product.precio}</p>
+                  <button onClick={() => quitProducts(index)}>❌NONI</button>
                 </div>
               ))}
             </div>
@@ -61,14 +92,18 @@ function App() {
                 element={<Cervezas setSelectedProduct={setSelectedProduct} />}
               />
               <Route path="/ginebras" element={<Ginebras />} />
+              <Route
+                path="/cocteles"
+                element={<Cocteles setSelectedProduct={setSelectedProduct} />}
+              />
             </Routes>
           </div>
         </div>
         <div className="botonesLaterales">
           <p>BOTONES LATERALES</p>
-          <button onClick={openSalones} className="mesas">
-            MESAS
-          </button>
+          <button onClick={openSalones} className="mesas">MESAS</button>
+          <button onClick={() => setSelectedProduct([])}>ANULAR CUENTA</button>
+
         </div>
       </div>
     </Router>
