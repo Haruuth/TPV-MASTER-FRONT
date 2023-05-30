@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Cervezas } from "./Components/Cervezas/Cervezas";
 import { Ginebras } from "./Components/Ginebras/Ginebras";
 import { Categorias } from "./Components/Categorias/Categorias";
@@ -10,37 +10,39 @@ import { Cocteles } from "./Components/Cocteles/Cocteles";
 function App() {
   const [selectedProduct, setSelectedProduct] = useState([]);
   const [salonOpen, setSalonOpen] = useState(false);
+  const [selectedMesaID, setSelectedMesaID] = useState("");
+  const [selectedMesaInfo, setSelectedMesaInfo] = useState({});
+
+
+  const handleMesaSelection = (numeroMesa) => {
+    setSelectedMesaID(numeroMesa);
+    setSelectedProduct(selectedMesaInfo[numeroMesa] || []);
+  };
+
+  const updateSelectedMesaInfo = () => {
+    setSelectedMesaInfo((prevState) => ({
+      ...prevState,
+      [selectedMesaID]: selectedProduct,
+    }));
+  };
+
+  useEffect(() => {
+    updateSelectedMesaInfo();
+  }, [selectedProduct, ]);
 
   const openSalones = () => {
-    setSalonOpen(true);
+    setSalonOpen((prevState) => !prevState);
   };
 
-  const totalCuenta = selectedProduct.reduce(
-    (sum, product) => sum + product.precio,
-    0
-  );
+  const totalCuenta = selectedProduct
+    .reduce((sum, product) => sum + product.precio, 0)
+    .toFixed(2);
 
-  const toggleSeleccionado = (index) => {
+  const quitProducts = (index) => {
     const updatedProducts = [...selectedProduct];
-    updatedProducts[index].seleccionado = !updatedProducts[index].seleccionado;
+    updatedProducts.splice(index, 1);
     setSelectedProduct(updatedProducts);
   };
-  const quitProducts = (index) => {
-    const updateProducts = [...selectedProduct];
-    updateProducts.splice(index, 1 )
-    setSelectedProduct(updateProducts);
-  }
-  // const cambiarPrecio = (index, precio) => {
-  //   const updatedProducts = [...selectedProduct];
-  //   updatedProducts[index].precioModificado = precio;
-  //   setSelectedProduct(updatedProducts);
-  // };
-
-  // const cambiarCantidad = (index, cantidad) => {
-  //   const updatedProducts = [...selectedProduct];
-  //   updatedProducts[index].cantidadModificada = cantidad;
-  //   setSelectedProduct(updatedProducts);
-  // };
 
 
   return (
@@ -48,35 +50,42 @@ function App() {
       <div className="containerApp">
         <div className="App">
           {/* <div className="modal"> */}
-          <Salon isOpen={salonOpen} onClose={() => setSalonOpen(false)}></Salon>
+          <Salon
+            onMesaSelect={handleMesaSelection}
+            isOpen={salonOpen}
+            onClose={() => setSalonOpen(false)}
+            selectedMesaInfo={selectedMesaInfo}
+          ></Salon>
+        
           {/* </div> */}
 
           <div className="textarea">
             <div className="textarea--bloque">
               {/* <p>Cuenta total:</p> */}
               {selectedProduct.map((product, index) => (
-                 <div className={`cuenta ${product.seleccionado ? 'seleccionado' : ''}`} key={index}>
-                 <input
-                   type="checkbox"
-                   checked={product.seleccionado}
-                   onChange={() => toggleSeleccionado(index)}
-                 />
+                <div
+                  className={`cuenta ${
+                    product.seleccionado ? "seleccionado" : ""
+                  }`}
+                  key={index}
+                >
                   <p>{product.nombre}</p>
                   <p>{product.precio}</p>
-                  <button onClick={() => quitProducts(index)}>❌NONI</button>
+                  <button onClick={() => quitProducts(index)}>❌</button>
                 </div>
               ))}
             </div>
             <div className="barraInferior">
-              <p className="mesa">
+              <p className="mesa1">
                 <strong>Mesa: </strong>
+                <strong> {selectedMesaID} </strong>
               </p>
               <p className="total">
-                <strong>Total: {totalCuenta} </strong>
+                <strong>Total: </strong>
+                <strong> {totalCuenta} </strong>
               </p>
             </div>
           </div>
-
           <div className="calculadora">
             <p> CALCULADORA </p>
           </div>
@@ -101,9 +110,10 @@ function App() {
         </div>
         <div className="botonesLaterales">
           <p>BOTONES LATERALES</p>
-          <button onClick={openSalones} className="mesas">MESAS</button>
+          <button onClick={openSalones} className="mesas">
+            MESAS
+          </button>
           <button onClick={() => setSelectedProduct([])}>ANULAR CUENTA</button>
-
         </div>
       </div>
     </Router>
