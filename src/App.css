@@ -54,7 +54,7 @@
   /* justify-content: space-between; */
 }
 
-.mesa{
+.mesa1{
   display: flex;
   justify-content: space-between;
 }
@@ -107,4 +107,10 @@
 
 .App-link {
   color: #61dafb;
+}
+
+.guardar-button{
+  width: 25%;
+  height: auto;
+  background-color: #f5fd00;
 }
