@@ -5,7 +5,7 @@ const Salon = ({ isOpen, onClose, onMesaSelect, selectedMesaInfo }) => {
   const [diseñoSalon, setDiseñoSalon] = useState(true);
   const [mostrarNuevaMesa, setMostrarNuevaMesa] = useState(false);
   const [mesaSeleccionada] = useState(null);
-  const [setMesaInfo] = useState({});
+  // const [setMesaInfo] = useState({});
 
   const handleMesaSelection = (numeroMesa) => {
     onMesaSelect(numeroMesa);
@@ -30,13 +30,13 @@ const Salon = ({ isOpen, onClose, onMesaSelect, selectedMesaInfo }) => {
     setMostrarNuevaMesa(!mostrarNuevaMesa);
   };
 
-  const guardarMesaSeleccionada = () => {
-    setMesaInfo((prevState) => ({
-      ...prevState,
-      [mesaSeleccionada]: [],
-    }));
-    onClose(); // Cerrar el componente "Salon" después de seleccionar la mesa
-  };
+  // const guardarMesaSeleccionada = () => {
+  //   setMesaInfo((prevState) => ({
+  //     ...prevState,
+  //     [mesaSeleccionada]: [],
+  //   }));
+  //   onClose(); // Cerrar el componente "Salon" después de seleccionar la mesa
+  // };
 
   return (
     <div className="contenedor">

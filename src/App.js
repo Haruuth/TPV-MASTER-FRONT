@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Cervezas } from "./Components/Cervezas/Cervezas";
 import { Ginebras } from "./Components/Ginebras/Ginebras";
 import { Categorias } from "./Components/Categorias/Categorias";
@@ -13,22 +13,48 @@ function App() {
   const [selectedMesaID, setSelectedMesaID] = useState("");
   const [selectedMesaInfo, setSelectedMesaInfo] = useState({});
 
-
   const handleMesaSelection = (numeroMesa) => {
     setSelectedMesaID(numeroMesa);
     setSelectedProduct(selectedMesaInfo[numeroMesa] || []);
   };
 
-  const updateSelectedMesaInfo = () => {
+  const updateSelectedMesaInfo = useCallback(() => {
     setSelectedMesaInfo((prevState) => ({
       ...prevState,
       [selectedMesaID]: selectedProduct,
     }));
-  };
+  }, [selectedMesaID, selectedProduct]);
 
   useEffect(() => {
     updateSelectedMesaInfo();
-  }, [selectedProduct, ]);
+  }, [selectedProduct, selectedMesaID, updateSelectedMesaInfo]);
+
+  
+  useEffect(() => {
+    const savedMesaInfo = localStorage.getItem("selectedMesaInfo");
+    const savedSelectedProduct = localStorage.getItem("selectedProduct");
+    
+    if (savedMesaInfo) {
+      setSelectedMesaInfo(JSON.parse(savedMesaInfo));
+    }
+    
+    if (savedSelectedProduct) {
+      setSelectedProduct(JSON.parse(savedSelectedProduct));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("selectedMesaInfo", JSON.stringify(selectedMesaInfo));
+    localStorage.setItem("selectedProduct", JSON.stringify(selectedProduct));
+  }, [ selectedProduct, selectedMesaInfo]);
+  
+  // useEffect(() => {
+  //   const savedMesaInfo = localStorage.getItem("selectedMesaInfo");
+  //   if (savedMesaInfo) {
+  //     setSelectedMesaInfo(JSON.parse(savedMesaInfo));
+  //   }
+  // }, []);
+
 
   const openSalones = () => {
     setSalonOpen((prevState) => !prevState);
@@ -44,7 +70,7 @@ function App() {
     setSelectedProduct(updatedProducts);
   };
 
-
+ 
   return (
     <Router>
       <div className="containerApp">
@@ -56,7 +82,7 @@ function App() {
             onClose={() => setSalonOpen(false)}
             selectedMesaInfo={selectedMesaInfo}
           ></Salon>
-        
+
           {/* </div> */}
 
           <div className="textarea">
@@ -121,3 +147,4 @@ function App() {
 }
 
 export default App;
+
