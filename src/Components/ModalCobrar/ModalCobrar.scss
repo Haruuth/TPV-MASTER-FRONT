@@ -1,0 +1,25 @@
+@media (min-width: 768px) {
+  .container {
+    width: 75%;
+    height: 75%;
+    position: absolute;
+    background-color: rgb(247, 16, 16);
+    display: flex;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+  }
+  
+
+    .cobrar{
+      height: 35px;
+      width: 130px;
+    }
+
+    .cerrar{
+      height: 30px;
+      width: 39px;
+      display: flex;
+    }
+}

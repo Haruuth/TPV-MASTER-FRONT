@@ -6,16 +6,27 @@ import { Ginebras } from "./Components/Ginebras/Ginebras";
 import { Categorias } from "./Components/Categorias/Categorias";
 import Salon from "./Components/Salon/Salon";
 import { Cocteles } from "./Components/Cocteles/Cocteles";
+import axios from "axios";
+import { ModalCobrar } from "./Components/ModalCobrar/ModalCobrar";
 
 function App() {
   const [selectedProduct, setSelectedProduct] = useState([]);
   const [salonOpen, setSalonOpen] = useState(false);
+  const [modalAbierta, setModalAbierta] = useState(false);
   const [selectedMesaID, setSelectedMesaID] = useState("");
   const [selectedMesaInfo, setSelectedMesaInfo] = useState({});
 
   const handleMesaSelection = (numeroMesa) => {
     setSelectedMesaID(numeroMesa);
     setSelectedProduct(selectedMesaInfo[numeroMesa] || []);
+  };
+
+  const handleAbrirModal = () => {
+    setModalAbierta(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalAbierta(false);
   };
 
   const updateSelectedMesaInfo = useCallback(() => {
@@ -29,15 +40,14 @@ function App() {
     updateSelectedMesaInfo();
   }, [selectedProduct, selectedMesaID, updateSelectedMesaInfo]);
 
-  
   useEffect(() => {
     const savedMesaInfo = localStorage.getItem("selectedMesaInfo");
     const savedSelectedProduct = localStorage.getItem("selectedProduct");
-    
+
     if (savedMesaInfo) {
       setSelectedMesaInfo(JSON.parse(savedMesaInfo));
     }
-    
+
     if (savedSelectedProduct) {
       setSelectedProduct(JSON.parse(savedSelectedProduct));
     }
@@ -46,15 +56,7 @@ function App() {
   useEffect(() => {
     localStorage.setItem("selectedMesaInfo", JSON.stringify(selectedMesaInfo));
     localStorage.setItem("selectedProduct", JSON.stringify(selectedProduct));
-  }, [ selectedProduct, selectedMesaInfo]);
-  
-  // useEffect(() => {
-  //   const savedMesaInfo = localStorage.getItem("selectedMesaInfo");
-  //   if (savedMesaInfo) {
-  //     setSelectedMesaInfo(JSON.parse(savedMesaInfo));
-  //   }
-  // }, []);
-
+  }, [selectedProduct, selectedMesaInfo]);
 
   const openSalones = () => {
     setSalonOpen((prevState) => !prevState);
@@ -70,7 +72,64 @@ function App() {
     setSelectedProduct(updatedProducts);
   };
 
- 
+  // const cobrarCuenta = async () => {
+  //   try {
+  //     const cuenta = {
+  //       num_mesa: selectedMesaID,
+  //       fecha: new Date(),
+  //       hora: new Date().toLocaleTimeString(),
+  //       productos: selectedProduct,
+  //       metodo_pago: "Efectivo", // Ejemplo de método de pago
+  //       total: totalCuenta,
+  //     };
+
+  //     const response = await axios.post("http://localhost:5000/cuentas", cuenta);
+
+  //     if (response.status === 200) {
+  //       // La cuenta se cobró exitosamente
+  //       alert("Cuenta cobrada exitosamente");
+  //       setSelectedProduct([]);
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //     alert("Error al cobrar la cuenta");
+  //   }
+  // };
+
+  const cobrarCuenta = async () => {
+    try {
+      const metodoPago = document.getElementById("modalidadPago").value;
+
+      if (metodoPago === "Efectivo" || metodoPago === "Tarjeta") {
+        const cuenta = {
+          num_mesa: selectedMesaID,
+          fecha: new Date(),
+          hora: new Date().toLocaleTimeString(),
+          productos: selectedProduct,
+          metodo_pago: metodoPago,
+          total: totalCuenta,
+        };
+
+        const response = await axios.post(
+          "http://localhost:5000/cuentas",
+          cuenta
+        );
+
+        if (response.status === 200) {
+          // La cuenta se cobró exitosamente
+          alert("Cuenta cobrada exitosamente");
+          setSelectedProduct([]);
+          handleCloseModal();
+        }
+      } else {
+        alert("Método de pago inválido");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Error al cobrar la cuenta");
+    }
+  };
+
   return (
     <Router>
       <div className="containerApp">
@@ -82,6 +141,7 @@ function App() {
             onClose={() => setSalonOpen(false)}
             selectedMesaInfo={selectedMesaInfo}
           ></Salon>
+            <ModalCobrar cobrarCuenta={cobrarCuenta} isOpen={modalAbierta} onClose={handleCloseModal} />
 
           {/* </div> */}
 
@@ -140,6 +200,9 @@ function App() {
             MESAS
           </button>
           <button onClick={() => setSelectedProduct([])}>ANULAR CUENTA</button>
+          <button onClick={modalAbierta ? handleCloseModal : handleAbrirModal}>
+            COBRAR CUENTA
+          </button>{" "}
         </div>
       </div>
     </Router>
@@ -147,4 +210,3 @@ function App() {
 }
 
 export default App;
-
