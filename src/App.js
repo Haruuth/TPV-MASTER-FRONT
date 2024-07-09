@@ -1,13 +1,11 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import React, { useCallback, useEffect, useState } from "react";
-import { Cervezas } from "./Components/Cervezas/Cervezas";
-import { Ginebras } from "./Components/Ginebras/Ginebras";
-import { Categorias } from "./Components/Categorias/Categorias";
-import Salon from "./Components/Salon/Salon";
-import { Cocteles } from "./Components/Cocteles/Cocteles";
+import { Categorias } from "./Categorias/Categorias";
+import Salon from "./Salon/Salon";
 import axios from "axios";
 import { ModalCobrar } from "./Components/ModalCobrar/ModalCobrar";
+import { Productos } from "./Components/Productos/Productos";
 
 function App() {
   const [selectedProduct, setSelectedProduct] = useState([]);
@@ -40,24 +38,6 @@ function App() {
     updateSelectedMesaInfo();
   }, [selectedProduct, selectedMesaID, updateSelectedMesaInfo]);
 
-  useEffect(() => {
-    const savedMesaInfo = localStorage.getItem("selectedMesaInfo");
-    const savedSelectedProduct = localStorage.getItem("selectedProduct");
-
-    if (savedMesaInfo) {
-      setSelectedMesaInfo(JSON.parse(savedMesaInfo));
-    }
-
-    if (savedSelectedProduct) {
-      setSelectedProduct(JSON.parse(savedSelectedProduct));
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("selectedMesaInfo", JSON.stringify(selectedMesaInfo));
-    localStorage.setItem("selectedProduct", JSON.stringify(selectedProduct));
-  }, [selectedProduct, selectedMesaInfo]);
-
   const openSalones = () => {
     setSalonOpen((prevState) => !prevState);
   };
@@ -71,30 +51,6 @@ function App() {
     updatedProducts.splice(index, 1);
     setSelectedProduct(updatedProducts);
   };
-
-  // const cobrarCuenta = async () => {
-  //   try {
-  //     const cuenta = {
-  //       num_mesa: selectedMesaID,
-  //       fecha: new Date(),
-  //       hora: new Date().toLocaleTimeString(),
-  //       productos: selectedProduct,
-  //       metodo_pago: "Efectivo", // Ejemplo de método de pago
-  //       total: totalCuenta,
-  //     };
-
-  //     const response = await axios.post("http://localhost:5000/cuentas", cuenta);
-
-  //     if (response.status === 200) {
-  //       // La cuenta se cobró exitosamente
-  //       alert("Cuenta cobrada exitosamente");
-  //       setSelectedProduct([]);
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //     alert("Error al cobrar la cuenta");
-  //   }
-  // };
 
   const cobrarCuenta = async () => {
     try {
@@ -116,7 +72,6 @@ function App() {
         );
 
         if (response.status === 200) {
-          // La cuenta se cobró exitosamente
           alert("Cuenta cobrada exitosamente");
           setSelectedProduct([]);
           handleCloseModal();
@@ -140,13 +95,18 @@ function App() {
             isOpen={salonOpen}
             onClose={() => setSalonOpen(false)}
             selectedMesaInfo={selectedMesaInfo}
+            openSalones={openSalones}
           ></Salon>
-            <ModalCobrar cobrarCuenta={cobrarCuenta} isOpen={modalAbierta} onClose={handleCloseModal} />
+          <ModalCobrar
+            cobrarCuenta={cobrarCuenta}
+            isOpen={modalAbierta}
+            onClose={handleCloseModal}
+          />
 
           {/* </div> */}
 
           <div className="textarea">
-            <div className="textarea--bloque">
+            <div className="textareaeee--bloque">
               {/* <p>Cuenta total:</p> */}
               {selectedProduct.map((product, index) => (
                 <div
@@ -183,13 +143,40 @@ function App() {
           <div className="products">
             <Routes>
               <Route
-                path="/cervezas"
-                element={<Cervezas setSelectedProduct={setSelectedProduct} />}
+                path="/"
+                element={
+                  <Productos
+                    setSelectedProduct={setSelectedProduct}
+                    productoURL={"cervezas"}
+                  />
+                }
               />
-              <Route path="/ginebras" element={<Ginebras />} />
+              <Route
+                path="/cervezas"
+                element={
+                  <Productos
+                    setSelectedProduct={setSelectedProduct}
+                    productoURL={"cervezas"}
+                  />
+                }
+              />
+              <Route
+                path="/ginebras"
+                element={
+                  <Productos
+                    setSelectedProduct={setSelectedProduct}
+                    productoURL={"ginebras"}
+                  />
+                }
+              />
               <Route
                 path="/cocteles"
-                element={<Cocteles setSelectedProduct={setSelectedProduct} />}
+                element={
+                  <Productos
+                    setSelectedProduct={setSelectedProduct}
+                    productoURL={"cocteles"}
+                  />
+                }
               />
             </Routes>
           </div>

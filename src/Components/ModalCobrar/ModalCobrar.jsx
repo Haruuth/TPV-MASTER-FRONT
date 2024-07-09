@@ -10,6 +10,9 @@ export const ModalCobrar = ({ cobrarCuenta, isOpen, onClose }) => {
     <div className="container">
       <div className="info">
         <p>SOY EL COBRO</p>
+        <p>Selecciona el método de pago</p>
+        <button>Tarjeta</button>
+        <button>Efectivo</button>
         <button className="cobrar" onClick={cobrarCuenta}>Cobrar cuenta</button>
         <button className="cerrar" onClick={onClose}>❌</button>
       </div>
