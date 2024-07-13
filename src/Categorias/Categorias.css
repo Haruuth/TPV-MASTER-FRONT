@@ -16,7 +16,6 @@
   height: 90%;
 }
 
-/* Estilos específicos para tabletas */
 @media (max-width: 768px) {
   .link {
     height: 10%;
@@ -25,7 +24,6 @@
     height: 90%;
   }
 }
-/* Estilos específicos para ordenadores */
 @media (min-width: 1024px) {
   .link {
     height: 25%;
@@ -33,4 +31,4 @@
   .bebida {
     height: 90%;
   }
-}/*# sourceMappingURL=Categorias.css.map */
+}

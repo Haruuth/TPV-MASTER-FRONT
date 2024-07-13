@@ -6,6 +6,9 @@ import Salon from "./Salon/Salon";
 import axios from "axios";
 import { ModalCobrar } from "./Components/ModalCobrar/ModalCobrar";
 import { Productos } from "./Components/Productos/Productos";
+import BotonesLaterales from "./Components/BotonesLaterales/botonesLaterales";
+import { Drawer } from "@mui/material";
+// import { Button } from "@mui/material";
 
 function App() {
   const [selectedProduct, setSelectedProduct] = useState([]);
@@ -13,15 +16,24 @@ function App() {
   const [modalAbierta, setModalAbierta] = useState(false);
   const [selectedMesaID, setSelectedMesaID] = useState("");
   const [selectedMesaInfo, setSelectedMesaInfo] = useState({});
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const handleMesaSelection = (numeroMesa) => {
     setSelectedMesaID(numeroMesa);
     setSelectedProduct(selectedMesaInfo[numeroMesa] || []);
   };
 
-  const handleAbrirModal = () => {
-    setModalAbierta(true);
+  const handleDrawerOpen = () => {
+    setDrawerOpen(true);
   };
+
+  const handleDrawerClose = () => {
+    setDrawerOpen(false);
+  };
+
+  // const handleAbrirModal = () => {
+  //   setModalAbierta(true);
+  // };
 
   const handleCloseModal = () => {
     setModalAbierta(false);
@@ -41,6 +53,10 @@ function App() {
   const openSalones = () => {
     setSalonOpen((prevState) => !prevState);
   };
+
+  // const closeSalones = () => {
+  //   setSalonOpen(false);
+  // };
 
   const totalCuenta = selectedProduct
     .reduce((sum, product) => sum + product.precio, 0)
@@ -85,11 +101,14 @@ function App() {
     }
   };
 
+  const handleAnularCuenta = () => {
+    setSelectedProduct([]);
+  };
+
   return (
     <Router>
-      <div className="containerApp">
-        <div className="App">
-          {/* <div className="modal"> */}
+      <div className="w-full flex">
+        <div class="flex flex-wrap w-full max-h-screen overflow-hidden">
           <Salon
             onMesaSelect={handleMesaSelection}
             isOpen={salonOpen}
@@ -102,15 +121,11 @@ function App() {
             isOpen={modalAbierta}
             onClose={handleCloseModal}
           />
-
-          {/* </div> */}
-
-          <div className="textarea">
-            <div className="textareaeee--bloque">
-              {/* <p>Cuenta total:</p> */}
+          <div className="relative bg-[#ff0e0eee] w-[60%] h-[40%] ">
+            <div className="w-full h-[80%] overflow-y-scroll">
               {selectedProduct.map((product, index) => (
                 <div
-                  className={`cuenta ${
+                  className={`flex justify-between ${
                     product.seleccionado ? "seleccionado" : ""
                   }`}
                   key={index}
@@ -121,18 +136,18 @@ function App() {
                 </div>
               ))}
             </div>
-            <div className="barraInferior">
-              <p className="mesa1">
+            <div class="absolute w-full flex items-center justify-between bg-black border-2 border-orange-500 text-white p-2">
+              <p className="flex justify-between w-[10%]">
                 <strong>Mesa: </strong>
                 <strong> {selectedMesaID} </strong>
               </p>
-              <p className="total">
+              <p className="flex justify-between w-[10%]">
                 <strong>Total: </strong>
                 <strong> {totalCuenta} </strong>
               </p>
             </div>
           </div>
-          <div className="calculadora">
+          <div className="bg-[#282c34] w-[40%] h-[40%]">
             <p> CALCULADORA </p>
           </div>
 
@@ -181,16 +196,28 @@ function App() {
             </Routes>
           </div>
         </div>
-        <div className="botonesLaterales">
-          <p>BOTONES LATERALES</p>
-          <button onClick={openSalones} className="mesas">
-            MESAS
-          </button>
-          <button onClick={() => setSelectedProduct([])}>ANULAR CUENTA</button>
-          <button onClick={modalAbierta ? handleCloseModal : handleAbrirModal}>
-            COBRAR CUENTA
-          </button>{" "}
+        <div className="flex">
+      {/* Botón para abrir el Drawer */}
+      <div className="flex items-center">
+        <button
+          onClick={handleDrawerOpen}
+          className="h-10 w-10 p-2 bg-gray-200 rounded-full hover:bg-gray-300 focus:outline-none"
+        >
+        </button>
+      </div>
+
+      {/* Drawer de Material-UI */}
+      <Drawer anchor="right" open={drawerOpen} onClose={handleDrawerClose}>
+        <div style={{ width: '250px', padding: '20px' }}>
+          <h2>Contenido del Drawer</h2>
+          <BotonesLaterales
+            handleAnularCuenta={handleAnularCuenta}
+            handleCobrarCuenta={cobrarCuenta}
+            closeDrawer={handleDrawerClose}
+          />
         </div>
+      </Drawer>
+    </div>
       </div>
     </Router>
   );
