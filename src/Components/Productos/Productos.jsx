@@ -8,11 +8,12 @@ export const Productos = ({setSelectedProduct, productoURL }) => {
   const [producto, setProductos] = useState([]);
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/${productoURL}`).then((res) => {
+    axios.get(`http://localhost:5000/${productoURL}`)
+    .then((res) => {
       console.log(res);
       setProductos(res.data);
     });
-  }, []);
+  }, [productoURL]);
 
   return (
     <>
